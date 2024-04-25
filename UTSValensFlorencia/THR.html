@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hitung THR</title>
+</head>
+<body>
+    <h2>Hitung THR</h2>
+    <label for="GajiPokok">Gaji Pokok :</label>
+    <input type="number" id="GajiPokok" required><br>
+
+    <label for="Tunjangan">Tunjangan Tetap :</label>
+    <input type="number" id="Tunjangan" required><br>
+
+    <label for="MasaKerja">Masa Kerja (Bulan) :</label>
+    <input type="number" id="MasaKerja" required><br><br>
+
+    <button id="Button">Jumlah THR</button>
+
+    <div id="HasilOutput"></div>
+
+    <script>
+        document.getElementById("Button").addEventListener("click", function() {
+            const GajiPokok = parseFloat(document.getElementById("GajiPokok").value);
+            const Tunjangan = parseFloat(document.getElementById("Tunjangan").value);
+            const MasaKerja = parseInt(document.getElementById("MasaKerja").value);
+
+            const TotalGaji = GajiPokok + Tunjangan;
+            let THR;
+
+            if (MasaKerja >= 12) {
+                THR = TotalGaji;
+            } else {
+                THR = (MasaKerja/12) * TotalGaji;
+            }
+
+            const HasilOutput = document.getElementById("HasilOutput");
+            HasilOutput.innerHTML = `<p>Jadi, Jumlah THR yang akan diterima sebesar Rp. ${THR.toFixed(2)}</p>`;
+        });
+
+        function HitungTHR(GajiPokok, TunjanganTetap, MasaKerja) {
+            if (MasaKerja >= 12) {
+                return GajiPokok + TunjanganTetap;
+            } else {
+                return (MasaKerja / 12) * (GajiPokok + TunjanganTetap);
+            }
+        }
+
+        function HitungPPH(TotalGaji) {
+            const PTKP = 4500000;
+            const tarifPPH = 0.05;
+            const tarifPajak = Math.max(TotalGaji - PTKP, 0);
+            const PPH = tarifPajak * tarifPPH;
+
+            return PPH;
+        }
+
+        function HitungTotalPembayaran(THR, PPH) {
+            return THR + PPH;
+        }
+
+        function HitungPembayaran() {
+            const GajiPokok = parseFloat(document.getElementById('GajiPokok').value);
+            const TunjanganTetap = parseFloat(document.getElementById('Tunjangan').value);
+            const MasaKerja = parseFloat(document.getElementById('MasaKerja').value);
+            const THR = HitungTHR(GajiPokok, TunjanganTetap, MasaKerja);
+            const TotalGaji = GajiPokok + TunjanganTetap;
+            const PPH = HitungPPH(TotalGaji);
+            const TotalPembayaran = HitungTotalPembayaran(THR, PPH);
+
+            document.getElementById('HasilOutput').innerHTML = `
+                Total Gaji: ${TotalGaji}<br>
+                THR: ${THR}<br>
+                PPH 21: ${PPH}<br>
+                Total Pembayaran: ${TotalPembayaran}
+            `;
+        }
+    </script>
+
+</body>
+</html>
